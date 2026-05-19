@@ -78,7 +78,7 @@ func (s *userService) GetByEmail(ctx context.Context, email string) (*domain.Use
 
 func (s *userService) Update(ctx context.Context, user *domain.User) (*domain.User, error) {
 	u, err := s.repo.Update(ctx, user)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil {
 		return nil, fmt.Errorf("failed to update user: %w", err)
 	}
 	return u, nil
@@ -86,7 +86,7 @@ func (s *userService) Update(ctx context.Context, user *domain.User) (*domain.Us
 
 func (s *userService) Delete(ctx context.Context, id int64) error {
 	err := s.repo.Delete(ctx, id)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil {
 		return fmt.Errorf("failed to delete user: %w", err)
 	}
 	return nil

@@ -26,7 +26,7 @@ type ChatService interface {
 }
 
 type MessageService interface {
-	Create(ctx context.Context, message *domain.Message) (*domain.Message, error)
+	Create(ctx context.Context, message *domain.CreateMessageRequest) (*domain.Message, error)
 	GetByID(ctx context.Context, id int64) (*domain.Message, error)
 	Update(ctx context.Context, message *domain.Message) (*domain.Message, error)
 	Delete(ctx context.Context, id int64) error

@@ -20,9 +20,9 @@ func NewMessageService(repo repository.MessageRepository) *messageService {
 	return &messageService{repo: repo}
 }
 
-func (s *messageService) Create(ctx context.Context, message *domain.Message) (*domain.Message, error) {
+func (s *messageService) Create(ctx context.Context, message *domain.CreateMessageRequest) (*domain.Message, error) {
 	m, err := s.repo.Create(ctx, message)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil {
 		return nil, fmt.Errorf("failed to create message: %w", err)
 	}
 	return m, nil
@@ -38,7 +38,7 @@ func (s *messageService) GetByID(ctx context.Context, id int64) (*domain.Message
 
 func (s *messageService) Update(ctx context.Context, message *domain.Message) (*domain.Message, error) {
 	m, err := s.repo.Update(ctx, message)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil {
 		return nil, fmt.Errorf("failed to update message: %w", err)
 	}
 	return m, nil
@@ -46,7 +46,7 @@ func (s *messageService) Update(ctx context.Context, message *domain.Message) (*
 
 func (s *messageService) Delete(ctx context.Context, id int64) error {
 	err := s.repo.Delete(ctx, id)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil {
 		return fmt.Errorf("failed to delete message: %w", err)
 	}
 	return nil

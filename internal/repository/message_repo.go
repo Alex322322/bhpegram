@@ -19,7 +19,7 @@ func NewPostgresMessageRepository(db *sqlx.DB) *PostgresMessageRepository {
 	return &PostgresMessageRepository{db: db}
 }
 
-func (r *PostgresMessageRepository) Create(ctx context.Context, req *domain.Message) (*domain.Message, error) {
+func (r *PostgresMessageRepository) Create(ctx context.Context, req *domain.CreateMessageRequest) (*domain.Message, error) {
 	query := `
 	INSERT INTO messages (chat_id, author_id, content, message_type)
 	VALUES ($1, $2, $3, $4)

@@ -26,7 +26,7 @@ type ChatRepository interface {
 }
 
 type MessageRepository interface {
-	Create(ctx context.Context, req *domain.Message) (*domain.Message, error)
+	Create(ctx context.Context, req *domain.CreateMessageRequest) (*domain.Message, error)
 	GetByID(ctx context.Context, id int64) (*domain.Message, error)
 	Update(ctx context.Context, message *domain.Message) (*domain.Message, error)
 	Delete(ctx context.Context, id int64) error

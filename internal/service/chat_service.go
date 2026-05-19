@@ -72,7 +72,7 @@ func (s *chatService) RemoveMember(ctx context.Context, chatID int64, userID int
 
 func (s *chatService) Update(ctx context.Context, chat *domain.Chat) (*domain.Chat, error) {
 	c, err := s.repo.Update(ctx, chat)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil {
 		return nil, fmt.Errorf("failed to update chat: %w", err)
 	}
 	return c, nil
@@ -80,7 +80,7 @@ func (s *chatService) Update(ctx context.Context, chat *domain.Chat) (*domain.Ch
 
 func (s *chatService) Delete(ctx context.Context, id int64) error {
 	err := s.repo.Delete(ctx, id)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil {
 		return fmt.Errorf("failed to delete chat: %w", err)
 	}
 	return nil

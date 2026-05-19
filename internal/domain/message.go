@@ -33,3 +33,10 @@ type MessageReaction struct {
 	ReactionID int64     `db:"reaction_id"`
 	CreatedAt  time.Time `db:"created_at"`
 }
+
+type CreateMessageRequest struct {
+	ChatID      int64  `json:"chat_id"`
+	AuthorID    int64  `json:"author_id"`
+	Content     string `json:"content"`
+	MessageType string `json:"message_type"`
+}
