@@ -18,6 +18,7 @@ func NewPostgresChatRepository(db *sqlx.DB) *PostgresChatRepository {
 	return &PostgresChatRepository{db: db}
 }
 
+/*
 func (r *PostgresChatRepository) Create(ctx context.Context, req *domain.Chat) (*domain.Chat, error) {
 	query := `
 	INSERT INTO chats (type, name, description, photo_url, created_by)
@@ -30,6 +31,41 @@ func (r *PostgresChatRepository) Create(ctx context.Context, req *domain.Chat) (
 		return nil, fmt.Errorf("failed to insert chat data to database: %w", err)
 	}
 	return &chat, nil
+}
+*/
+
+func (r *PostgresChatRepository) CreateWithMember(ctx context.Context, chat *domain.Chat, member *domain.ChatMember) (*domain.Chat, error) {
+    tx, err := r.db.BeginTxx(ctx, nil)
+    if err != nil {
+        return nil, fmt.Errorf("failed to begin transaction: %w", err)
+    }
+    defer tx.Rollback()
+
+    query := `
+    INSERT INTO chats (type, name, description, photo_url, created_by)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING *`
+
+    var createdChat domain.Chat
+    err = tx.QueryRowxContext(ctx, query, chat.Type, chat.Name, chat.Description, chat.PhotoURL, chat.CreatedBy).StructScan(&createdChat)
+    if err != nil {
+        return nil, fmt.Errorf("failed to create chat: %w", err)
+    }
+
+    memberQuery := `
+    INSERT INTO chat_members (chat_id, user_id, role)
+    VALUES ($1, $2, $3)`
+
+    _, err = tx.ExecContext(ctx, memberQuery, createdChat.ID, createdChat.CreatedBy, "owner")
+    if err != nil {
+        return nil, fmt.Errorf("failed to add creator as member: %w", err)
+    }
+
+    if err = tx.Commit(); err != nil {
+        return nil, fmt.Errorf("failed to commit transaction: %w", err)
+    }
+
+    return &createdChat, nil
 }
 
 func (r *PostgresChatRepository) Delete(ctx context.Context, id int64) error {

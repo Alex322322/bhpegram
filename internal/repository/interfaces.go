@@ -16,7 +16,8 @@ type UserRepository interface {
 }
 
 type ChatRepository interface {
-	Create(ctx context.Context, req *domain.Chat) (*domain.Chat, error)
+	//Create(ctx context.Context, req *domain.Chat) (*domain.Chat, error)
+	CreateWithMember(ctx context.Context, chat *domain.Chat, member *domain.ChatMember) (*domain.Chat, error)
 	GetByID(ctx context.Context, id int64) (*domain.Chat, error)
 	GetUserChats(ctx context.Context, userID int64) ([]*domain.Chat, error)
 	AddMember(ctx context.Context, member *domain.ChatMember) error

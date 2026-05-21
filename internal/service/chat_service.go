@@ -20,6 +20,7 @@ func NewChatService(repo repository.ChatRepository) *chatService {
 	return &chatService{repo: repo}
 }
 
+/*
 func (s *chatService) Create(ctx context.Context, chat *domain.Chat) (*domain.Chat, error) {
 	c, err := s.repo.Create(ctx, chat)
 	if err != nil {
@@ -35,6 +36,15 @@ func (s *chatService) Create(ctx context.Context, chat *domain.Chat) (*domain.Ch
 		return nil, fmt.Errorf("failed to add creator as member: %w", err)
 	}
 
+	return c, nil
+}
+*/
+
+func (s *chatService) CreateWithMember(ctx context.Context, chat *domain.Chat, member *domain.ChatMember) (*domain.Chat, error) {
+	c, err := s.repo.CreateWithMember(ctx, chat, member)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create chat with member: %w", err)
+	}
 	return c, nil
 }
 
