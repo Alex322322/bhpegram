@@ -40,8 +40,8 @@ func (s *chatService) Create(ctx context.Context, chat *domain.Chat) (*domain.Ch
 }
 */
 
-func (s *chatService) CreateWithMember(ctx context.Context, chat *domain.Chat, member *domain.ChatMember) (*domain.Chat, error) {
-	c, err := s.repo.CreateWithMember(ctx, chat, member)
+func (s *chatService) CreateWithMember(ctx context.Context, chat *domain.Chat) (*domain.Chat, error) {
+	c, err := s.repo.CreateWithMember(ctx, chat)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create chat with member: %w", err)
 	}

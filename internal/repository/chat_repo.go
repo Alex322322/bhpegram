@@ -34,7 +34,7 @@ func (r *PostgresChatRepository) Create(ctx context.Context, req *domain.Chat) (
 }
 */
 
-func (r *PostgresChatRepository) CreateWithMember(ctx context.Context, chat *domain.Chat, member *domain.ChatMember) (*domain.Chat, error) {
+func (r *PostgresChatRepository) CreateWithMember(ctx context.Context, chat *domain.Chat) (*domain.Chat, error) {
     tx, err := r.db.BeginTxx(ctx, nil)
     if err != nil {
         return nil, fmt.Errorf("failed to begin transaction: %w", err)
